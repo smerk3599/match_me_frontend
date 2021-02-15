@@ -1,3 +1,6 @@
+import ReactDOM from "react-dom";
+import React, {useState} from "react";
+import ReactCardFlip from 'react-card-flip';
 import '../components/App.css';
 
 function Card(c) {

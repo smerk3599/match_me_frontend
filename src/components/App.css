@@ -28,6 +28,7 @@ body {
     width: 12vw;
     background-color: ivory;
     margin: 10px 10px;
+    border: 3px, solid, black;
 }
 
 .cardImage {
