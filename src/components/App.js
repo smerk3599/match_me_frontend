@@ -22,7 +22,7 @@ const App = () => {
         playerOneName: 'Player One',
         playerTwoName: 'Player Two',
         playerOnePoints: 0,
-        playertwoPoints: 0
+        playerTwoPoints: 0
     }
 
     const turnObject = {
@@ -66,12 +66,13 @@ const App = () => {
             } else if (players.currentPlayer === 'Player Two'){
                 players.playerTwoPoints += 1;
             setPlayers(players);
-            setCards(newCardsArray);
+            setTimeout(function(){
+                setCards(newCardsArray)
+                }, 3000);
             }
         }
         if (!turn.itsAMatch){
             console.log('hello');
-            setTimeout(function(){}, 3000);
             turn.firstCard.status = 'back';
             turn.secondCard.status = 'back';
             let newCardsArray = cards.map((card) => {
@@ -83,10 +84,16 @@ const App = () => {
                     return card
                 }
             })
-
-            players.currentPlayer = 'Player Two';
+            console.log(players.currentPlayer);
+            if (players.currentPlayer === "Player One") {
+                players.currentPlayer = "Player Two";
+            } else if (players.currentPlayer === "Player Two") {
+                players.currentPlayer = "Player One";
+            }
             setPlayers(players);
-            setCards(newCardsArray);
+            setTimeout(function(){
+                setCards(newCardsArray)
+                }, 3000);
             }
         }
 
@@ -103,7 +110,7 @@ const App = () => {
 
     const cardFlip = (card, id) => {
 
-        // console.log(card.status);
+
         const newCard = card;
         // const newId = id;
         console.log(newCard.status);
@@ -122,7 +129,9 @@ const App = () => {
                 return card
             }
         })
-        setCards(newCardsArray)
+
+
+        setCards(newCardsArray);
 
         // Check for what point in the turn a player is
 
@@ -155,6 +164,10 @@ const App = () => {
         <div>
             <div className="header">
                 <div className="currentPlayer">{players.currentPlayer}</div>
+                <div className="score">
+                    <h3 className="p1score">{players.playerOneName} : {players.playerOnePoints || 0}</h3>
+                    <h3 className="p2score">{players.playerTwoName} : {players.playerTwoPoints || 0}</h3>
+                </div>
             </div>
             <div className="sidebar">
                 <button onClick={()=>getCards()}>
@@ -164,13 +177,13 @@ const App = () => {
             <div className="gameboard">
                 {cards.map((card, id) => {
                     return (
-                        <button className="eachCard" key={id} onClick={()=>cardFlip(card, id)}>
+                        <div className="eachCard" key={id}>
                             {(card.status === "front")?
-                            <div><img className="cardImage" src={card.image} alt={card.name}/>{card.name}</div>
-                            : (card.status === "back")?
-                            <img className="cardImage" src={card.back} alt={card.name}/>
-                            : <div className="hiddenCard"></div>}
-                        </button>
+                            <div ><img  className="cardImage" src={card.image} alt={card.name}/>{card.name}</div>
+                            : (card.status === "back")?<button  onClick={()=>cardFlip(card, id)}>
+                            <img className="cardBack" src={card.back} alt={card.name}/></button>
+                            : <div className="hiddenCard" disabled></div>}
+                        </div>
                     )}
                 )}
             </div>
