@@ -45,11 +45,11 @@ const App = () => {
     }
 
     const checkForAMatch = () => {
-        console.log(turn.itsAMatch);
+        // console.log(turn.itsAMatch);
         if (turn.itsAMatch) {
             turn.firstCard.status = 'hidden';
             turn.secondCard.status = 'hidden';
-            let newCardsArray = cards.map((card) => {
+            var newCardsArray = cards.map((card) => {
                 if (card._id === turn.firstCard._id) {
                     return turn.firstCard
                 } else if (card._id === turn.secondCard._id){
@@ -63,38 +63,33 @@ const App = () => {
 
             if (players.currentPlayer === 'Player One'){
                 players.playerOnePoints += 1;
-            } else if (players.currentPlayer === 'Player Two'){
-                players.playerTwoPoints += 1;
-            setPlayers(players);
-            setTimeout(function(){
-                setCards(newCardsArray)
-                }, 3000);
-            }
-        }
-        if (!turn.itsAMatch){
-            console.log('hello');
-            turn.firstCard.status = 'back';
-            turn.secondCard.status = 'back';
-            let newCardsArray = cards.map((card) => {
-                if (card._id === turn.firstCard._id) {
-                    return turn.firstCard
-                } else if (card._id === turn.secondCard._id){
-                    return turn.secondCard
-                } else {
-                    return card
+                } else if (players.currentPlayer === 'Player Two'){
+                    players.playerTwoPoints += 1;
+                    }
+            setTimeout(() => {setPlayers(players)}, 5000);
+            setTimeout(() => {setCards(newCardsArray)}, 5000);
+            } else if (!turn.itsAMatch) {
+                console.log('hello');
+                turn.firstCard.status = 'back';
+                turn.secondCard.status = 'back';
+                let newCardsArray = cards.map((card) => {
+                    if (card._id === turn.firstCard._id) {
+                        return turn.firstCard
+                    } else if (card._id === turn.secondCard._id){
+                        return turn.secondCard
+                    } else {
+                        return card
+                    }
+                })
+                // console.log(players.currentPlayer);
+                if (players.currentPlayer === "Player One") {
+                    players.currentPlayer = "Player Two";
+                } else if (players.currentPlayer === "Player Two") {
+                    players.currentPlayer = "Player One";
                 }
-            })
-            console.log(players.currentPlayer);
-            if (players.currentPlayer === "Player One") {
-                players.currentPlayer = "Player Two";
-            } else if (players.currentPlayer === "Player Two") {
-                players.currentPlayer = "Player One";
-            }
-            setPlayers(players);
-            setTimeout(function(){
-                setCards(newCardsArray)
-                }, 3000);
-            }
+                setTimeout(() => {setPlayers(players)}, 5000);
+                setTimeout(() => {setCards(newCardsArray)}, 5000);
+                }
         }
 
     // Get the cards from the database
