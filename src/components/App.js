@@ -87,9 +87,12 @@ const App = () => {
                     return card
                 }
             })
-
-
-            setCards(newCardsArray)
+            turn.numberOfMatches+=1;
+            setTurn(turn);
+            if (turn.numberOfMatches === 15){
+                endOfGame();
+            }
+            setCards(newCardsArray);
             } else if (!turn.itsAMatch) {
                 console.log('hello');
                 turn.firstCard.status = 'back';
@@ -179,6 +182,8 @@ const App = () => {
         players.playerOnePoints = 0;
         players.playerTwoPoints = 0;
         setPlayers(players);
+        turn.numberOfMatches= 0;
+        setTurn(turn);
         axios.get('http://localhost:3000/cards').then((response) => {
             console.log(response.data);
             setCards(response.data)
