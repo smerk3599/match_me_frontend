@@ -32,7 +32,7 @@ const App = () => {
         cardsTurnedOver: 0,
         firstCard: {},
         secondCard: {},
-        numberOfMatches: 0
+        numberOfMatches: 0,
     }
 
     const [cards, setCards] = useState(deck)
@@ -111,9 +111,8 @@ const App = () => {
     // Get the cards from the database
 
     const getCards = () => {
-        axios.get('http://localhost:3000/cards/seed')
+        axios.get('http://localhost:3000/cards/seed');
         axios.get('http://localhost:3000/cards').then((response) => {
-            console.log(response.data);
             shuffleCardsArray(response.data);
             setCards(response.data)
         })
@@ -127,7 +126,7 @@ const App = () => {
         if (newCard.status === "back") {
             newCard.status = "front"
         };
-        let newCardsArray = cards.map((card) => {
+        newCardsArray = cards.map((card) => {
             if (card._id === newCard._id) {
                 return newCard
             } else {
@@ -135,7 +134,7 @@ const App = () => {
             }
         })
 
-        setTimeout(setCards(newCardsArray), 3000);
+        setCards(newCardsArray)
 
         // Check for what point in the turn a player is
 
@@ -167,6 +166,25 @@ const App = () => {
         }
     }
 
+
+    const endOfGame = () => {
+        axios.get('http://localhost:3000/cards/dropcollection');
+        if (players.playerOnePoints > players.playerTwoPoints) {
+            players.currentPlayer = "Player One Wins";
+        } else if (players.playerTwoPoints > players.playerOnePoints) {
+            players.currentPlayer = "Player Two Wins";
+        } else  {
+            players.currentPlayer = "Its a tie!";
+        }
+        players.playerOnePoints = 0;
+        players.playerTwoPoints = 0;
+        setPlayers(players);
+        axios.get('http://localhost:3000/cards').then((response) => {
+            console.log(response.data);
+            setCards(response.data)
+        })
+    }
+
     return (
         <div>
             <div className="header">
@@ -177,9 +195,23 @@ const App = () => {
                 </div>
             </div>
             <div className="sidebar">
-                <button onClick={()=>getCards()}>
+                <button className="button instructions">Instructions
+                    <p className="instructions-text">This is a card matching game that is played by two players.  The game begins when the deal button is clicked. If a player matches two cards in their turn, they receive a point and get to continue their turn. If a player does not match two cards, they forfeit their turn.  Play continues until their are no more cards to choose from and a winner is declared.</p>
+                </button>
+                <br/>
+                <button className="button" onClick={()=>getCards()}>
                     Deal
                 </button>
+                <br/>
+                <button onClick={()=>endOfGame()} className="button">Restart Game</button>
+                <br/>
+                <button className="button" id="about">About
+                    <div className="about-text">
+                        <h4>About Me</h4>
+                        <p>This game was developed as a gift to my daughter Victoria.  She loves this game, and I was excited to implement it in this way. Feel free to contact me with any suggestions or comments.<br/><br/><a href="mailto:stevenmercer9913@gmail.com">stevenmercer9913@gmail.com</a><br/></p>
+                    </div>
+                </button>
+                <br/>
             </div>
             <div className="gameboard">
                 {cards.map((card, id) => {
