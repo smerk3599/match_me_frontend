@@ -30,6 +30,7 @@ const App = () => {
         cardsTurnedOver: 0,
         firstCard: {},
         secondCard: {},
+        endOfGame: false
     }
 
     const [cards, setCards] = useState(deck)
@@ -96,7 +97,9 @@ const App = () => {
     // Get the cards from the database
 
     const getCards = () => {
+        axios.get('http://localhost:3000/cards/seed')
         axios.get('http://localhost:3000/cards').then((response) => {
+            console.log(response.data);
             shuffleCardsArray(response.data);
             setCards(response.data)
         })
@@ -167,7 +170,7 @@ const App = () => {
                     return (
                         <div className="eachCard" key={id}>
                             {(card.status === "front")?
-                            <div ><img  className="cardImage" src={card.image} alt={card.name}/>{card.name}</div>
+                            <div ><img  className="cardImage" src={card.front} alt={card.name}/>{card.name}</div>
                             : (card.status === "back")?<button  onClick={()=>cardFlip(card, id)}>
                             <img className="cardBack" src={card.back} alt={card.name}/></button>
                             : <div className="hiddenCard" disabled></div>}

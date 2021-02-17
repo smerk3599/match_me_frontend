@@ -30,7 +30,7 @@ body {
 }
 
 .eachCard {
-    height: 20vh;
+    height: 15vh;
     width: 12vw;
     background-color: ivory;
     margin: 10px 10px;
@@ -41,13 +41,8 @@ body {
 
 .cardImage {
     width: 9vw;
-    height: 15vh;
-    transition-property: background-color;
-    transition-duration: 3s;
-}
-
-.cardImage : active{
-    background-color: rgb(255, 255, 245)
+    height: 11vh;
+    margin: 10px;
 }
 
 .currentPlayer {
@@ -57,16 +52,10 @@ body {
 }
 
 .cardBack {
-    height: 20vh;
+    height: 15vh;
     width: 12vw;
     background-color: ivory;
     border: 3px, solid, black;
-    transition-duration: 5s;
-    transition-property: all;
-
-}
-.cardback : active {
-    transform: rotateY(180deg);
 }
 
 .hiddenCard {
