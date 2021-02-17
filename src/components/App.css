@@ -44,6 +44,7 @@ body {
     width: 8vw;
     height: 9vh;
     margin: 8px 3px 0px 3px;
+
 }
 
 .currentPlayer {
@@ -129,6 +130,10 @@ button.eachCard {
 
   .instructions-text {
       font-size: 0.5rem;
+  }
+
+  span {
+      font-size: .6rem;
   }
 }
 

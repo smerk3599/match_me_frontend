@@ -218,7 +218,7 @@ const App = () => {
                     return (
                         <div className="eachCard" key={id}>
                             {(card.status === "front")?
-                            <div ><img  className="cardImage" src={card.front} alt={card.name}/>{card.name}</div>
+                            <div ><img  className="cardImage" src={card.front} alt={card.name}/><span>{card.name}</span></div>
                             : (card.status === "back")?<button  onClick={()=>cardFlip(card, id)}>
                             <img className="cardBack" src={card.back} alt={card.name}/></button>
                             : <div className="hiddenCard" disabled></div>}
