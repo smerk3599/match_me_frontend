@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import '../components/App.css';
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ function shuffleCardsArray(array) {
   }
   return array;
 }
+
+let newCardsArray =[];
 
 const App = () => {
 
@@ -30,7 +32,7 @@ const App = () => {
         cardsTurnedOver: 0,
         firstCard: {},
         secondCard: {},
-        endOfGame: false
+        numberOfMatches: 0
     }
 
     const [cards, setCards] = useState(deck)
@@ -42,16 +44,41 @@ const App = () => {
         turn.itsAMatch = false;
         turn.firstCard = {};
         turn.secondCard = {};
+        newCardsArray =[];
         setTurn(turn);
     }
+    const updatePlayer = () => {
+        if (turn.itsAMatch){
 
+            // Change the players points for a match
 
-    const checkForAMatch = () => {
+            if (players.currentPlayer === 'Player One'){
+                players.playerOnePoints += 1;
+                } else if (players.currentPlayer === 'Player Two'){
+                    players.playerTwoPoints += 1;
+                    }
+            // The player whose turn it is stays the same with a match
+
+            setPlayers(players);
+        } else if (!turn.itsAMatch) {
+
+            // The player loses their turn without a match
+
+            if (players.currentPlayer === "Player One") {
+                players.currentPlayer = "Player Two";
+            } else if (players.currentPlayer === "Player Two") {
+                players.currentPlayer = "Player One";
+            }
+            setPlayers(players);
+        }
+    }
+
+    const changeCardStatus = () => {
         // console.log(turn.itsAMatch);
         if (turn.itsAMatch) {
             turn.firstCard.status = 'hidden';
             turn.secondCard.status = 'hidden';
-            var newCardsArray = cards.map((card) => {
+            newCardsArray = cards.map((card) => {
                 if (card._id === turn.firstCard._id) {
                     return turn.firstCard
                 } else if (card._id === turn.secondCard._id){
@@ -61,20 +88,13 @@ const App = () => {
                 }
             })
 
-            // Change the players points for a match
 
-            if (players.currentPlayer === 'Player One'){
-                players.playerOnePoints += 1;
-                } else if (players.currentPlayer === 'Player Two'){
-                    players.playerTwoPoints += 1;
-                    }
-            setPlayers(players);
-            setTimeout(setCards(newCardsArray), 5000)
+            setCards(newCardsArray)
             } else if (!turn.itsAMatch) {
                 console.log('hello');
                 turn.firstCard.status = 'back';
                 turn.secondCard.status = 'back';
-                let newCardsArray = cards.map((card) => {
+                newCardsArray = cards.map((card) => {
                     if (card._id === turn.firstCard._id) {
                         return turn.firstCard
                     } else if (card._id === turn.secondCard._id){
@@ -83,14 +103,8 @@ const App = () => {
                         return card
                     }
                 })
-                // console.log(players.currentPlayer);
-                if (players.currentPlayer === "Player One") {
-                    players.currentPlayer = "Player Two";
-                } else if (players.currentPlayer === "Player Two") {
-                    players.currentPlayer = "Player One";
-                }
-                setPlayers(players)
-                setTimeout(setCards(newCardsArray), 5000);
+
+                setCards(newCardsArray);
                 }
         }
 
@@ -108,7 +122,6 @@ const App = () => {
     }
 
     const cardFlip = (card, id) => {
-
         const newCard = card;
         console.log(newCard.status);
         if (newCard.status === "back") {
@@ -140,12 +153,15 @@ const App = () => {
                     turn.itsAMatch = true
                 }
                 setTurn(turn);
-                checkForAMatch();
-                newTurn();
+                updatePlayer();
                 break;
             }
             default : {
+                changeCardStatus();
                 newTurn();
+                turn.cardsTurnedOver += 1;
+                turn.firstCard = card;
+                setTurn(turn);
                 break;
             }
         }
