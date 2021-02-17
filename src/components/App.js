@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../components/App.css';
 import axios from 'axios';
 
@@ -44,6 +44,7 @@ const App = () => {
         setTurn(turn);
     }
 
+
     const checkForAMatch = () => {
         // console.log(turn.itsAMatch);
         if (turn.itsAMatch) {
@@ -66,8 +67,8 @@ const App = () => {
                 } else if (players.currentPlayer === 'Player Two'){
                     players.playerTwoPoints += 1;
                     }
-            setTimeout(() => {setPlayers(players)}, 5000);
-            setTimeout(() => {setCards(newCardsArray)}, 5000);
+            setPlayers(players);
+            setTimeout(setCards(newCardsArray), 5000)
             } else if (!turn.itsAMatch) {
                 console.log('hello');
                 turn.firstCard.status = 'back';
@@ -87,8 +88,8 @@ const App = () => {
                 } else if (players.currentPlayer === "Player Two") {
                     players.currentPlayer = "Player One";
                 }
-                setTimeout(() => {setPlayers(players)}, 5000);
-                setTimeout(() => {setCards(newCardsArray)}, 5000);
+                setPlayers(players)
+                setTimeout(setCards(newCardsArray), 5000);
                 }
         }
 
@@ -105,19 +106,12 @@ const App = () => {
 
     const cardFlip = (card, id) => {
 
-
         const newCard = card;
-        // const newId = id;
         console.log(newCard.status);
         if (newCard.status === "back") {
             newCard.status = "front"
-        } else if (newCard.status === "front") {
-            newCard.status = "back"
         };
-        // console.log(newCard.status);
         let newCardsArray = cards.map((card) => {
-            // console.log(newCard._id);
-            // console.log(id);
             if (card._id === newCard._id) {
                 return newCard
             } else {
@@ -125,8 +119,7 @@ const App = () => {
             }
         })
 
-
-        setCards(newCardsArray);
+        setTimeout(setCards(newCardsArray), 3000);
 
         // Check for what point in the turn a player is
 
